@@ -2,6 +2,8 @@ import React from 'react'
 
 import firebase from '../firebase-config'
 
+import Stripe from './stripe'
+
 const Pallete = props => {
 
     const pallete = firebase.database().ref(`palettes/${props.id}`)
@@ -19,21 +21,7 @@ const Pallete = props => {
 
     return (
         <div>
-            <div>
-                {/* {Object.values(data).map((color, index) => {
-                    return(
-                            <div key={index}
-                                style={{
-                                    height: '100px',
-                                    width: '100px',
-                                    background: color
-                                }}
-                            >
-                                {color}
-                            </div>
-                    )
-                })}  */}
-            </div>
+            {colors.map((color, index) => <Stripe key={index} background={color} colors={colors}/> )}
         </div>
     )
 }
