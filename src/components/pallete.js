@@ -17,8 +17,6 @@ const Pallete = props => {
         })
     })
 
-    console.log(colors)
-
     return (
         <div>
             {colors.map((color, index) => <Stripe key={index} background={color} colors={colors}/> )}
