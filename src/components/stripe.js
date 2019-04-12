@@ -15,7 +15,7 @@ const Stripe = (props) => {
                     <span>{background.value}</span>
                 </header>
                 <div className="background">
-                    {blocks.map((color, index) => <Block key={index} color={color} colors={colors}/>)}
+                    {blocks.map((color, index) => <Block key={index} background={background} color={color} colors={colors}/>)}
                 </div>
             </section>
     )
