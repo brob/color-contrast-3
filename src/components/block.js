@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Contrast from './contrast'
 import styled from 'styled-components'
 import axios from 'axios'
-
+let contrast = require('wcag-contrast');
 // https://webaim.org/resources/contrastchecker/?fcolor=FF0000&bcolor=FFFFFF&api
 
 const Block = (props) => {
@@ -13,25 +13,28 @@ const Block = (props) => {
     } = props
 
     const [data, setData] = useState({})
-
     color = color.value.replace("#", "")
     background = background.value.replace("#", "")
 
     useEffect(() => {
-        axios.all([
-            axios.get(`https://webaim.org/resources/contrastchecker/?fcolor=${color}&bcolor=${background}&api`),
-            axios.get(`https://webaim.org/resources/contrastchecker/?fcolor=000000&bcolor=${color}&api`)
-        ])
-        .then(axios.spread((colorsResponse, labelResponse) => {
-            setData({
-                ...colorsResponse.data,
-                blackContrast: labelResponse.data.AA
-            })
-        }))
-        .catch(error => {
-            console.log(error);
-            setData('error')
-        })
+        let ratio = contrast.hex(color, background).toFixed(2);
+        let score = contrast.score(ratio);
+        let blackRatio = contrast.score(contrast.hex(color, "#000"));
+
+        
+        if (blackRatio == "") {
+            blackRatio = false
+        } else {
+            blackRatio = "pass"
+        }
+
+        setData({
+            ratio,
+            score,
+            blackRatio
+        });
+
+        
     }, [])
 
     return (
